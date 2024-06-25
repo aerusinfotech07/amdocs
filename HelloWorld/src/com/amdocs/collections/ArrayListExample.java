@@ -1,6 +1,7 @@
-package com.amdocs.ass1;
+package com.amdocs.collections;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 public class ArrayListExample {
@@ -36,7 +37,10 @@ public class ArrayListExample {
 		System.out.println("Using Enchnaced For Loop Since java 1.8");
 		list.forEach(data->System.out.println(data));
 		*/
-		System.out.println(list.contains("Mumbai4"));
+		System.out.println(list);
+		Collections.sort(list);
+		
+		System.out.println(list);
 		
 		
 		

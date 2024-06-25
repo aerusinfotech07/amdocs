@@ -1,6 +1,6 @@
 package com.amdocs.ass1;
 
-public  class Employee {
+public  class Employee implements Comparable<Employee>{
 	
 	private int id; //instance Variable //Heap(memory)
 	private String name;
@@ -20,6 +20,24 @@ public  class Employee {
 	}
 	
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getBranch() {
+		return branch;
+	}
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setSal(float sal) {
+		this.sal = sal;
+	}
 	public float getSal() {
 		return sal;
 	}
@@ -35,6 +53,11 @@ public  class Employee {
 	}
 	public static void setCompanyName(String companyName) {
 		Employee.companyName = companyName;
+	}
+	@Override
+	public int compareTo(Employee o) {
+		// TODO Auto-generated method stub
+		return o.getId()-id;
 	}
 	
 	
