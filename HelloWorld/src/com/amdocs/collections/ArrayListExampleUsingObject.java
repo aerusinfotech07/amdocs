@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import com.amdocs.ass1.Employee;
+import com.amdocs.ass1.SortEmployeeById;
+import com.amdocs.ass1.SortEmployeeByName;
 
 public class ArrayListExampleUsingObject {
 
@@ -15,12 +17,17 @@ public class ArrayListExampleUsingObject {
 		list.add(new Employee(103, "Sita", 22000, "Nagpur"));
 		list.add(new Employee(101, "Ravan", 10000, "Mumbai"));
 		
-		list.forEach(emp->System.out.println(emp));
+		//list.forEach(emp->System.out.println(emp));
 		
 		//System.out.println(list);Syso
-		Collections.sort(list);
+		Collections.sort(list,new SortEmployeeById());
 		
 		System.out.println(list);
+		
+		//System.out.println(list);Syso
+				Collections.sort(list,new SortEmployeeByName());
+				
+				System.out.println(list);
 		
 		
 		
