@@ -24,33 +24,7 @@ public class LambdaExpression2 {
 		
 		
 		
-		Collections.sort(products,(p1,p2)->{
-			return p1.getName().compareTo(p2.getName());
-		});
 		
-		Stream<Product> stream=products.stream().filter(product->product.getPrice()>=500);
-		stream.forEach(data->System.out.println(data));
-		
-		List<Float> priceList=products.stream().map(product->product.getPrice()).collect(Collectors.toList());
-		System.out.println(priceList);
-		
-		Set<String> nameList=products.stream().map(product->product.getName()).collect(Collectors.toSet());
-		System.out.println(nameList);
-		
-		Double sumOfProductPrice=products.stream().collect(Collectors.summingDouble(product->product.getPrice()));
-		System.out.println("Total Sum "+sumOfProductPrice);
-		
-		long count=products.stream().collect(Collectors.counting());
-		System.out.println("No Of Records "+count);
-		
-		
-		/*for(Product product:products)
-		{
-			if(product.getPrice()>=500)
-				System.out.println(product);
-		}*/
-		
-		//products.forEach(data->System.out.println(data));
 		
 		
 		
