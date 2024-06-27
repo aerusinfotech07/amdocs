@@ -1,7 +1,12 @@
 package com.amdocs.ass1;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class BankAccountMain {
 	
@@ -10,8 +15,10 @@ public class BankAccountMain {
 		int counter=0;
 		int transactionCounter=0;
 		Scanner sc=new Scanner(System.in);
-		BankAccount accounts[]=new BankAccount[BankInterface.MAX_ACCCOUNT];
-		Transaction transactions[]=new Transaction[BankInterface.MAX_ACCCOUNT*100];
+		List<BankAccount> accounts=new ArrayList<BankAccount>();
+		List<Transaction> transactions=new ArrayList<Transaction>();
+		BankAccount bankAccount=null;
+		Transaction transaction=null;
 		
 		do
 		{
@@ -21,75 +28,83 @@ public class BankAccountMain {
 			System.out.println("4:Perform Withdraw");
 			System.out.println("5:Perform Deposit");
 			System.out.println("6:Display All Transactions");
+			System.out.println("7:Branch Wise Balance Summery");
+			System.out.println("8:Transaction Status Summery");
 			System.out.println("9:Exit");
 			System.out.println("Enter Your choice");
 			int choice=sc.nextInt();
 			switch(choice)
 			{
 			case 1:
-				accounts[counter]=new BankAccount();
-				accounts[counter].createAccount();
-				
-				transactions[transactionCounter]=new Transaction(accounts[counter].getId(),"",Status.CREATED, LocalDateTime.now());
-				transactionCounter++;
-				counter++;
+				//Accounts to be created
+				bankAccount =new BankAccount();
+				bankAccount.createAccount();
+				accounts.add(bankAccount);
+				//transactions neeeed to maintain for each operations
+				transaction=new Transaction(bankAccount.getId(),"",Status.CREATED, LocalDateTime.now());
+				transactions.add(transaction);
 				break;
 			case 2:
-				for(int i=0;i<counter;i++) {
-					System.out.println(accounts[i]);				
-				}
+				accounts.forEach(account->System.out.println(account));
 				break;
 			
 			case 3:
 				System.out.println("Enter Account id to search");
 				int id=sc.nextInt();
 				boolean flagToFind=false;
-				for(int i=0;i<counter;i++) {
+				/*for(int i=0;i<counter;i++) {
 					if(accounts[i].getId()==id) {
 						System.out.println(accounts[i]);
 						flagToFind=true;
 					}
 					if(!flagToFind)
 						System.out.println(id +" Account Not Exist");
-				}
+				}*/
+				accounts.stream().filter(account->account.getId()==id)
+					.forEach(account->System.out.println(account));
 				break;
+				
 			case 4:
 				System.out.println("Enter Account id to search For Windraw");
 				int idForWindraw=sc.nextInt();
-				boolean flagToFind4Withdraw=false;
-				for(int i=0;i<counter;i++) {
-					if(accounts[i].getId()==idForWindraw) {
-						System.out.println("Before "+accounts[i]);
-						float amontForWindraw=sc.nextFloat();
-						try {
-						accounts[i].withdraw(amontForWindraw);
-						}
-						catch(InsufficientBalanceException ex)
-						{
-							System.out.println(ex);
-						}
-						catch(NullPointerException ex)
-						{
-							System.out.println(ex);
-						}
-						finally
-						{
-							System.out.println("Finally Block");
-						}
-						System.out.println("After "+accounts[i]);
-						flagToFind4Withdraw=true;
-						transactions[transactionCounter]=new Transaction(accounts[i].getId(),"",Status.WITHDRAW, LocalDateTime.now());
-						transactionCounter++;
-					}
-					if(!flagToFind4Withdraw)
-						System.out.println(idForWindraw +" Account Not Exist");
+				
+				Optional<BankAccount> optionalAccount=accounts.stream()
+						.filter(account->account.getId()==idForWindraw).findFirst();
+				if(optionalAccount.isPresent()) {
+					BankAccount account=optionalAccount.get();
+					System.out.println("Before "+account);
+					System.out.println("Enter Amount to Withdraw");
+					float amontForWindraw=sc.nextFloat();
+					account.withdraw(amontForWindraw);
+					transaction=new Transaction(account.getId(),"",Status.WITHDRAW, LocalDateTime.now());
+					transactions.add(transaction);
 				}
-				break;
+				else
+					System.out.println(idForWindraw +" Account Not Exist");
+				
+			break;
+				
+				
 			case 6:
-				for(int i=0;i<transactionCounter;i++) {
+				/*for(int i=0;i<transactionCounter;i++) {
 					System.out.println(transactions[i]);				
-				}
+				}*/
+				transactions.forEach(trans->System.out.println(trans));
 				break;	
+			case 7:				
+				 Map<String, Double> branchBalanceSum = accounts.stream()
+		            .collect(Collectors.groupingBy(BankAccount::getBranch, 
+		                                           Collectors.summingDouble(BankAccount::getBal)));
+		        branchBalanceSum.forEach((branch, totalBalance) -> 
+		            System.out.println("Branch: " + branch + ", Total Balance: " + totalBalance));		        
+		        
+		     
+		        break;
+			case 8:
+				  Map<Status, Long> statusCount =transactions.stream().collect(Collectors.groupingBy(Transaction::getStatus,Collectors.counting()));
+				  statusCount.forEach((status, count) -> 
+		            System.out.println("Status: " + status + ", Count: " + count));
+				break;
 			case 9:
 				System.exit(0);
 				
