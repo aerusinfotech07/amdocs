@@ -43,12 +43,13 @@ public class BankAccountMainWithArray {
 				accounts[counter]=bankAccount;
 				counter++;
 				//transactions neeeed to maintain for each operations
-				transaction=new Transaction(bankAccount.getId(),"",Status.CREATED, LocalDateTime.now());
+				transaction=new Transaction(bankAccount.getId(),"New Account Created for "+bankAccount.getId(),Status.CREATED, LocalDateTime.now());
 				transactions[transactionCounter++]=transaction;
 				break;
 			case 2:
 				
-				Arrays.asList(accounts).forEach(account->System.out.println(account));
+				for(BankAccount acc:accounts)
+					System.out.println(acc);
 				break;
 			
 			case 3:
@@ -63,8 +64,14 @@ public class BankAccountMainWithArray {
 					if(!flagToFind)
 						System.out.println(id +" Account Not Exist");
 				}*/
-				Arrays.asList(accounts).stream().filter(account->account.getId()==id)
-					.forEach(account->System.out.println(account));
+				for(BankAccount acc:accounts) {
+					if(acc.getId()==id) {
+						System.out.println(acc);
+						flagToFind=true;
+					}
+				}
+				if(!flagToFind)
+					System.out.println("Account Not Found");
 				break;
 				
 			case 4:

@@ -43,7 +43,7 @@ public class BankAccount implements BankInterface{
 			if(bal>=amount+200)
 				bal=bal-amount;
 			else
-			throw new InsufficientBalanceException("Amount Should be multiple of 200");
+			throw new InsufficientBalanceException("You Should have minimum of 200");
 		
 	}
 	
@@ -56,8 +56,10 @@ public class BankAccount implements BankInterface{
 	@Override
 	public void transfer(BankAccount account,float amount)
 	{
-		if(amount%100==0)
+		if(amount%100==0) {
+			withdraw(amount);
 			account.deposit(amount);
+		}
 		else
 			System.out.println("Amount Should be multiple of 100");
 	}
