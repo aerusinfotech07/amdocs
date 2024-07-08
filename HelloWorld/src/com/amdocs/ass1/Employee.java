@@ -60,6 +60,18 @@ public  class Employee implements Comparable<Employee>{
 		return name.compareTo(o.getName());
 	}
 	
+	@Override
+	public boolean equals(Object obj)
+	{
+		Employee e=(Employee)obj;
+		if(this.getId()==e.getId() && this.getName().equals(e.getName()))
+			return true;
+		
+		return false;
+	}
+	
+	
+	
 	
 	
 
